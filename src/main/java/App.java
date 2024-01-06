@@ -1,3 +1,5 @@
+import dagger.internal.DaggerGenerated;
+import pl.dc4b.cardirectory.dao.CalcDao;
 import pl.dc4b.cardirectory.dao.CarDao;
 import pl.dc4b.cardirectory.entities.Brand;
 import pl.dc4b.cardirectory.entities.Car;
@@ -5,9 +7,14 @@ import pl.dc4b.cardirectory.entities.CarColor;
 
 import java.util.Comparator;
 import java.util.List;
+import dagger.*;
 
-public class Main {
+public class App {
     public static void main(String[] args) {
+
+        AppComponent component = DaggerAppComponent.create();
+        CalcDao calcDao = component.calcDao();
+        calcDao.sayHello();
 
         CarDao carDao = new CarDao();
 

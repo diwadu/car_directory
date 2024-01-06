@@ -5,4 +5,9 @@ public class CalcDaoImpl implements CalcDao {
     public int addTwoNumbers(int x, int y) {
         return x + y;
     }
+
+    @Override
+    public void sayHello() {
+        System.out.println("Hello from CalcDao!");
+    }
 }
