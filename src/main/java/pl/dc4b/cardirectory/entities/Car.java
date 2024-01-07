@@ -1,7 +1,5 @@
 package pl.dc4b.cardirectory.entities;
 
-import java.time.LocalDateTime;
-
 public class Car extends BaseEntity {
     private Brand brand;
     private String model;

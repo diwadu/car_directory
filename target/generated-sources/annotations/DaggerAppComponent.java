@@ -38,9 +38,8 @@ public final class DaggerAppComponent {
     private final AppComponentImpl appComponentImpl = this;
 
     private AppComponentImpl() {
-
-
     }
+
 
     @Override
     public CalcDao calcDao() {

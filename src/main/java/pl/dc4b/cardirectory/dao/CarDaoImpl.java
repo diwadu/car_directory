@@ -5,15 +5,12 @@ import pl.dc4b.cardirectory.entities.Car;
 import pl.dc4b.cardirectory.entities.CarColor;
 import pl.dc4b.cardirectory.helpers.DbHelper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 
-public class CarDao<T extends Car> extends CrudDao<Car> {
+public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> {
 
-    public CarDao() {
+    public CarDaoImpl() {
         super(Car.class);
     }
     @Override
@@ -57,23 +54,40 @@ public class CarDao<T extends Car> extends CrudDao<Car> {
         return car;
     }
 
-    public T create(T entity) {
-        try (Connection connection = DbHelper.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(super.buildInsertQuery(), PreparedStatement.RETURN_GENERATED_KEYS)) {
+    public void create(T entity) {
+        try (Connection connection = DbHelper.getConnection()) {
+            connection.setAutoCommit(false);
 
-            setParametersForInsert(preparedStatement, entity);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(super.buildInsertQuery())) {
+                setParametersForInsert(preparedStatement, entity);
 
-            preparedStatement.executeUpdate();
+                int affectedRows = preparedStatement.executeUpdate();
 
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getInt(1));
+                if (affectedRows > 0) {
+                    try (Statement stmt = connection.createStatement()) {
+                        try (ResultSet resultSet = stmt.executeQuery("SELECT LAST_INSERT_ROWID()")) {
+                            if (resultSet.next()) {
+                                entity.setId(resultSet.getInt(1));
+                            } else {
+                                throw new SQLException("Failed to retrieve the last inserted row ID.");
+                            }
+                        }
+                    }
+                } else {
+                    throw new SQLException("Creating entity failed, no rows affected.");
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+            } finally {
+                connection.setAutoCommit(true);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return entity;
     }
 }
