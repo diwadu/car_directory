@@ -1,6 +1,6 @@
 package pl.dc4b.cardirectory.entities;
 
-public enum Brand {
+public enum CarBrand {
     Audi,
     BMW,
     Ford,

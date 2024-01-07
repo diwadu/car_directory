@@ -1,7 +1,9 @@
 import dagger.Component;
 import pl.dc4b.cardirectory.dao.CalcDao;
+import pl.dc4b.cardirectory.dao.CarDao;
 
 @Component(modules = AppModule.class)
 public interface AppComponent {
-    CalcDao calcDao(); // Dagger will provide the implementation
+    CalcDao calcDao();
+    CarDao carDao();
 }

@@ -4,15 +4,11 @@ import pl.dc4b.cardirectory.entities.BaseEntity;
 import pl.dc4b.cardirectory.helpers.DbHelper;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
-
     private final Class<T> entityType;
     private static final String SELECT_ALL_QUERY = "SELECT * FROM %s";
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM %s WHERE id=?";
@@ -25,26 +21,46 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
 
     public abstract String getTableName();
 
-    public T create(T entity) {
-        try (Connection connection = DbHelper.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(buildInsertQuery(), PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            setParametersForInsert(preparedStatement, entity);
+    @Override
+    public void create(T entity) {
+        try (Connection connection = DbHelper.getConnection()) {
+            connection.setAutoCommit(false);
 
-            preparedStatement.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(buildInsertQuery())) {
+                setParametersForInsert(preparedStatement, entity);
 
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getInt(1));
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows > 0) {
+                    try (Statement stmt = connection.createStatement()) {
+                        try (ResultSet resultSet = stmt.executeQuery("SELECT LAST_INSERT_ROWID()")) {
+                            if (resultSet.next()) {
+                                entity.setId(resultSet.getInt(1));
+                            } else {
+                                throw new SQLException("Failed to retrieve the last inserted row ID.");
+                            }
+                        }
+                    }
+                } else {
+                    throw new SQLException("Creating entity failed, no rows affected.");
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+            } finally {
+                connection.setAutoCommit(true);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return entity;
     }
 
+    @Override
     public List<T> getAll() {
         List<T> entities = new ArrayList<>();
 
@@ -64,7 +80,8 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         return entities;
     }
 
-    public T read(int id) {
+    @Override
+    public T getById(int id) {
         T entity = null;
 
         try (Connection connection = DbHelper.getConnection();
@@ -85,7 +102,8 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         return entity;
     }
 
-    public T update(T entity) {
+    @Override
+    public void update(T entity) {
         try (Connection connection = DbHelper.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(buildUpdateQuery())) {
 
@@ -98,9 +116,9 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
             e.printStackTrace();
         }
 
-        return entity;
     }
 
+    @Override
     public void delete(int id) {
         try (Connection connection = DbHelper.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(buildDeleteQuery())) {
@@ -118,8 +136,9 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         Class<?> currentClass = entityType;
         while (currentClass != null) {
             for (Field field : currentClass.getDeclaredFields()) {
-                if (!field.getName().equals("id"))
-                    fields.add(field);
+                if (field.getName().equals("id") || field.isAnnotationPresent(IgnoreInSql.class))
+                    continue;
+                else fields.add(field);
             }
             currentClass = currentClass.getSuperclass();
         }
@@ -127,53 +146,49 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         return fields;
     }
 
-
-
     protected abstract void setParametersForInsert(PreparedStatement preparedStatement, T entity) throws SQLException;
 
     protected abstract void setParametersForUpdate(PreparedStatement preparedStatement, T entity) throws SQLException;
 
     protected abstract T mapResultSetToEntity(ResultSet resultSet) throws SQLException;
 
-
     protected String buildInsertQuery() {
-        String columnNames = "(";
-        String values = "(";
+        StringBuilder columnNames = new StringBuilder("(");
+        StringBuilder values = new StringBuilder("(");
 
         List<Field> fields = getAllFields();
 
         for (int i = 0; i < fields.size(); i++) {
-            columnNames += fields.get(i).getName();
-            values += "?";
+            columnNames.append(fields.get(i).getName());
+            values.append("?");
 
             if (i < fields.size() - 1) {
-                columnNames += ", ";
-                values += ", ";
+                columnNames.append(", ");
+                values.append(", ");
             }
         }
 
-        columnNames += ")";
-        values += ")";
+        columnNames.append(")");
+        values.append(")");
 
-        return String.format(INSERT_QUERY, getTableName(), columnNames, values);
+        return String.format(INSERT_QUERY, getTableName(), columnNames.toString(), values.toString());
     }
 
     private String buildUpdateQuery() {
-        String setClause = "";
+        StringBuilder setClause = new StringBuilder();
 
         List<Field> fields = getAllFields();
 
         for (int i = 0; i < fields.size(); i++) {
-            setClause += fields.get(i).getName() + "=?";
+            setClause.append(fields.get(i).getName()).append("=?");
 
             if (i < fields.size() - 1) {
-                setClause += ", ";
+                setClause.append(", ");
             }
         }
 
-        return String.format(UPDATE_QUERY, getTableName(), setClause);
+        return String.format(UPDATE_QUERY, getTableName(), setClause.toString());
     }
-
 
     private String buildDeleteQuery() {
         return String.format(DELETE_QUERY, getTableName());
@@ -186,7 +201,4 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
     private String buildSelectAllQuery() {
         return String.format(SELECT_ALL_QUERY, getTableName());
     }
-
-
-
 }

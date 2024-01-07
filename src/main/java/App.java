@@ -1,8 +1,8 @@
-import pl.dc4b.cardirectory.dao.CalcDao;
-import pl.dc4b.cardirectory.dao.CarDaoImpl;
-import pl.dc4b.cardirectory.entities.Brand;
+import pl.dc4b.cardirectory.dao.CarDao;
 import pl.dc4b.cardirectory.entities.Car;
+import pl.dc4b.cardirectory.entities.CarBrand;
 import pl.dc4b.cardirectory.entities.CarColor;
+import pl.dc4b.cardirectory.helpers.DbHelper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -10,15 +10,22 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
 
+        //DI using service locator
         AppComponent component = DaggerAppComponent.create();
-        CalcDao calcDao = component.calcDao();
-        calcDao.sayHello();
+        CarDao carDao = component.carDao();
 
-        CarDaoImpl carDao = new CarDaoImpl();
+        setupDb();
+        doCrudStuff(carDao);
+    }
 
+    /**
+     * Helper method
+     * @param carDao - CarDAO instance
+     */
+    private static void doCrudStuff(CarDao carDao) {
         // Insert a new car
         Car car = new Car();
-        car.setBrand(Brand.BMW);
+        car.setBrand(CarBrand.BMW);
         car.setModel("M3");
         car.setProductionYear(2022);
         car.setColor(CarColor.Black);
@@ -39,21 +46,23 @@ public class App {
 
 
         // Update a car
-        Car carToUpdate = (Car) carDao.read(lastCar.getId());
+        Car carToUpdate = (Car) carDao.getById(lastCar.getId());
         carToUpdate.setModel("Corolla");
         carDao.update(carToUpdate);
 
         // Retrieve the updated car
-        Car updatedCar = (Car) carDao.read(carToUpdate.getId());
+        Car updatedCar = (Car) carDao.getById(carToUpdate.getId());
         System.out.println("Updated Car: " + updatedCar.getId() + ": " + updatedCar.getBrand() + " " + updatedCar.getModel() + " (" + updatedCar.getProductionYear() + ")");
 
         // Delete a car
-        carDao.delete(updatedCar.getId());
+        //carDao.delete(updatedCar.getId());
 
         // Verify the deletion
-        Car deletedCar = (Car) carDao.read(updatedCar.getId());
-        System.out.println("Is Car Deleted: " + (deletedCar == null));
+        //Car deletedCar = (Car) carDao.read(updatedCar.getId());
+        //System.out.println("Is Car Deleted: " + (deletedCar == null));
     }
 
-
+    private static void setupDb() {
+        DbHelper.executeSqlScript("create_db.sql");
+    }
 }

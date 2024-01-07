@@ -1,6 +1,7 @@
 import dagger.internal.DaggerGenerated;
 import javax.annotation.processing.Generated;
 import pl.dc4b.cardirectory.dao.CalcDao;
+import pl.dc4b.cardirectory.dao.CarDao;
 
 @DaggerGenerated
 @Generated(
@@ -38,12 +39,18 @@ public final class DaggerAppComponent {
     private final AppComponentImpl appComponentImpl = this;
 
     private AppComponentImpl() {
-    }
 
+
+    }
 
     @Override
     public CalcDao calcDao() {
       return AppModule_ProvideMyServiceFactory.provideMyService();
+    }
+
+    @Override
+    public CarDao carDao() {
+      return AppModule_ProvideCarDaoFactory.provideCarDao();
     }
   }
 }

@@ -1,30 +1,40 @@
 package pl.dc4b.cardirectory.entities;
 
+import pl.dc4b.cardirectory.dao.IgnoreInSql;
+
+import java.util.List;
+
 public class Car extends BaseEntity {
-    private Brand brand;
+    private CarBrand brand;
     private String model;
     private int productionYear;
     private CarColor color;
     private String vin;
 
+    @IgnoreInSql
+    private List<Contractor> contractors;
+
     public Car() {
         // Default constructor
     }
 
-    public Car(Brand brand, String model, int productionYear, CarColor color, String vin) {
+    public Car(
+            CarBrand brand, String model, int productionYear, CarColor color,
+            String vin, List<Contractor> contractors) {
         this.brand = brand;
         this.model = model;
         this.productionYear = productionYear;
         this.color = color;
         this.vin = vin;
+        this.contractors = contractors;
     }
 
-    public Brand getBrand() {
+    public CarBrand getBrand() {
         return brand;
     }
 
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    public void setBrand(CarBrand carBrand) {
+        this.brand = carBrand;
     }
 
     public String getModel() {
@@ -57,6 +67,14 @@ public class Car extends BaseEntity {
 
     public void setVin(String vin) {
         this.vin = vin;
+    }
+
+    public List<Contractor> getContractors() {
+        return contractors;
+    }
+
+    public void setContractors(List<Contractor> contractors) {
+        this.contractors = contractors;
     }
 }
 

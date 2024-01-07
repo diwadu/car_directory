@@ -5,9 +5,9 @@ import pl.dc4b.cardirectory.entities.BaseEntity;
 import java.util.List;
 
 public interface CrudDao<T extends BaseEntity> {
-    T create(T entity);
+    void create(T entity);
     List<T> getAll();
-    T read(int id);
-    T update(T entity);
+    T getById(int id);
+    void update(T entity);
     void delete(int id);
 }
