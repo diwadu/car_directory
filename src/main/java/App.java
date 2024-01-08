@@ -2,6 +2,7 @@ import pl.dc4b.cardirectory.dao.CarDao;
 import pl.dc4b.cardirectory.entities.Car;
 import pl.dc4b.cardirectory.entities.CarBrand;
 import pl.dc4b.cardirectory.entities.CarColor;
+import pl.dc4b.cardirectory.fxui.JavaFXApp;
 import pl.dc4b.cardirectory.helpers.DbHelper;
 import pl.dc4b.cardirectory.services.CarService;
 
@@ -17,7 +18,9 @@ public class App {
 
         CarService carService = appComponent.carService();
         //doCrudStuff(carDao);
-        var cars = carService.getAllCars();
+        //var cars = carService.getAllCars();
+
+        JavaFXApp.main(args);
     }
 
     private static void setupDI() {

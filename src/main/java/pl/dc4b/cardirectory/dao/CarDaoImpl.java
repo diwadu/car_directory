@@ -110,8 +110,7 @@ public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDa
             e.printStackTrace();
         }
 
-        List<Car> cars = new ArrayList<>(carMap.values());
-        return cars;
+        return new ArrayList<>(carMap.values());
     }
 
 }
