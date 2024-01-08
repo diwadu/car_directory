@@ -1,17 +1,27 @@
 package pl.dc4b.cardirectory.dao;
 
-import pl.dc4b.cardirectory.entities.Car;
-import pl.dc4b.cardirectory.entities.CarBrand;
-import pl.dc4b.cardirectory.entities.CarColor;
+import pl.dc4b.cardirectory.entities.*;
+import pl.dc4b.cardirectory.helpers.DbHelper;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDao {
 
+    private static final String SELECT_ALL_QUERY =
+            " SELECT " +
+            "   cars.id, cars.brand, cars.model, cars.productionYear, cars.color, cars.vin, cars.createdAt, cars.updatedAt, " +
+            "   contractors.id AS contractor_id, contractors.firstName, contractors.lastName, contractors.email, contractors.phone, contractors.type, contractors.createdAt, contractors.updatedAt " +
+            " FROM cars " +
+            "   LEFT JOIN cars_2_contractors ON cars.id = cars_2_contractors.car_id " +
+            "   LEFT JOIN contractors ON cars_2_contractors.contractor_id = contractors.id";
     public CarDaoImpl() {
         super(Car.class);
     }
@@ -60,4 +70,48 @@ public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDa
     public List<Car> findByBrand(String brand) {
         return getAll().stream().filter(x -> x.getBrand().equals(brand)).toList();
     }
+
+    @Override
+    public List<Car> getAll() {
+        Map<Integer, Car> carMap = new HashMap<>();
+
+        try (Connection connection = DbHelper.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int carId = resultSet.getInt("id");
+                    Car car = carMap.computeIfAbsent(carId, k -> {
+                        try {
+                            return mapResultSetToEntity(resultSet);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+                    // Contractor details
+                    int contractorId = resultSet.getInt("contractor_id");
+                    if (contractorId != 0) {
+                        Contractor contractor = new Contractor();
+                        contractor.setId(contractorId);
+                        contractor.setFirstName(resultSet.getString("firstName"));
+                        contractor.setLastName(resultSet.getString("lastName"));
+                        contractor.setEmail(resultSet.getString("email"));
+                        contractor.setPhone(resultSet.getString("phone"));
+                        contractor.setType(ContractorType.valueOf(resultSet.getString("type")));
+                        contractor.setCreatedAt(resultSet.getObject("createdAt", LocalDateTime.class));
+                        contractor.setUpdatedAt(resultSet.getObject("updatedAt", LocalDateTime.class));
+                        car.getContractors().add(contractor);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Car> cars = new ArrayList<>(carMap.values());
+        return cars;
+    }
+
 }

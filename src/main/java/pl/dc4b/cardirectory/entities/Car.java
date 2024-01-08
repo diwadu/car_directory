@@ -2,6 +2,7 @@ package pl.dc4b.cardirectory.entities;
 
 import pl.dc4b.cardirectory.dao.IgnoreInSql;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Car extends BaseEntity {
@@ -12,10 +13,9 @@ public class Car extends BaseEntity {
     private String vin;
 
     @IgnoreInSql
-    private List<Contractor> contractors;
+    private List<Contractor> contractors = new ArrayList<>();
 
     public Car() {
-        // Default constructor
     }
 
     public Car(
@@ -26,6 +26,7 @@ public class Car extends BaseEntity {
         this.productionYear = productionYear;
         this.color = color;
         this.vin = vin;
+        this.contractors = new ArrayList<>();
         this.contractors = contractors;
     }
 

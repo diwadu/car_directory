@@ -198,7 +198,7 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         return String.format(SELECT_BY_ID_QUERY, getTableName());
     }
 
-    private String buildSelectAllQuery() {
+    protected String buildSelectAllQuery() {
         return String.format(SELECT_ALL_QUERY, getTableName());
     }
 }

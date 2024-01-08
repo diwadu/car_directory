@@ -1,7 +1,8 @@
 package pl.dc4b.cardirectory.entities;
 
 public enum ContractorType {
-    CarOwner,
+    Owner,
     Mechanic,
-    CarDriver
+    Painter,
+    ELectrician
 }

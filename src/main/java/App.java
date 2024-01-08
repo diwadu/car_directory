@@ -3,19 +3,29 @@ import pl.dc4b.cardirectory.entities.Car;
 import pl.dc4b.cardirectory.entities.CarBrand;
 import pl.dc4b.cardirectory.entities.CarColor;
 import pl.dc4b.cardirectory.helpers.DbHelper;
+import pl.dc4b.cardirectory.services.CarService;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class App {
+    public  static  AppComponent appComponent;
+
     public static void main(String[] args) {
+        setupDI();
+        //setupDb();
 
-        //DI using service locator
-        AppComponent component = DaggerAppComponent.create();
-        CarDao carDao = component.carDao();
+        CarService carService = appComponent.carService();
+        //doCrudStuff(carDao);
+        var cars = carService.getAllCars();
+    }
 
-        setupDb();
-        doCrudStuff(carDao);
+    private static void setupDI() {
+        appComponent = DaggerAppComponent.create();
+    }
+
+    private static void setupDb() {
+        DbHelper.executeSqlScript("create_db.sql");
     }
 
     /**
@@ -62,7 +72,5 @@ public class App {
         //System.out.println("Is Car Deleted: " + (deletedCar == null));
     }
 
-    private static void setupDb() {
-        DbHelper.executeSqlScript("create_db.sql");
-    }
+
 }
