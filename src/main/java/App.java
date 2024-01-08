@@ -1,3 +1,5 @@
+import pl.dc4b.cardirectory.config.AppComponent;
+import pl.dc4b.cardirectory.config.DaggerAppComponent;
 import pl.dc4b.cardirectory.dao.CarDao;
 import pl.dc4b.cardirectory.entities.Car;
 import pl.dc4b.cardirectory.entities.CarBrand;
@@ -10,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class App {
-    public  static  AppComponent appComponent;
+    public  static AppComponent appComponent;
 
     public static void main(String[] args) {
         setupDI();
@@ -18,7 +20,7 @@ public class App {
 
         CarService carService = appComponent.carService();
         //doCrudStuff(carDao);
-        //var cars = carService.getAllCars();
+        var cars = carService.getAllCars();
 
         JavaFXApp.main(args);
     }

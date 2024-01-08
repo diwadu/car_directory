@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pl.dc4b.cardirectory.fxui.CarListController"
+      spacing="10">
+
+    <HBox alignment="CENTER_LEFT" spacing="20" prefWidth="-Infinity" prefHeight="50.0">
+        <!-- Search Text Field with added left margin -->
+        <TextField fx:id="searchTextField" promptText="Search" prefWidth="300.0" VBox.vgrow="NEVER">
+            <HBox.margin>
+                <Insets left="15.0"/>
+            </HBox.margin>
+        </TextField>
+
+        <!-- Add space below all 3 controls -->
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0"/>
+        </VBox.margin>
+
+        <!-- Search Button with Icon (Replace "search-icon.png" with your actual icon) -->
+        <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="100.0" text="Search">
+            <graphic>
+                <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Reset Button with Icon (Replace "reset-icon.png" with your actual icon) -->
+        <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="100.0" text="Reset">
+            <graphic>
+                <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/reset-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- Car Properties Table -->
+    <TableView fx:id="carTableView" VBox.vgrow="ALWAYS">
+        <!-- Define Columns -->
+        <columns>
+            <TableColumn text="Brand" fx:id="brandColumn"/>
+            <TableColumn text="Model" fx:id="modelColumn"/>
+            <TableColumn text="Production Year" fx:id="productionYearColumn"/>
+            <TableColumn text="Color" fx:id="colorColumn"/>
+            <TableColumn text="VIN" fx:id="vinColumn"/>
+            <TableColumn text="Number of Contractors" fx:id="numberOfContractorsColumn"/>
+        </columns>
+    </TableView>
+</VBox>

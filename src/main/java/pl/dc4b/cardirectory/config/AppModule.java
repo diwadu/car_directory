@@ -1,3 +1,5 @@
+package pl.dc4b.cardirectory.config;
+
 import dagger.Module;
 import dagger.Provides;
 import pl.dc4b.cardirectory.dao.CalcDao;

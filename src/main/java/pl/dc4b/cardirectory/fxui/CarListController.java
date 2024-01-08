@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import pl.dc4b.cardirectory.entities.*;
+import pl.dc4b.cardirectory.services.CarService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +47,15 @@ public class CarListController {
     @FXML
     private TableColumn<Car, Integer> numberOfContractorsColumn;
 
+    //private final CarService carService;
+
+   /* @Inject
+    public CarListController(CarService carService){
+        this.carService = carService;
+    }*/
+
     private final ObservableList<Car> allCars = FXCollections.observableArrayList();
+
 
     public void initialize() {
         // Initialize the table columns with property values
@@ -68,13 +78,14 @@ public class CarListController {
 
         carTableView.setItems(allCars);
 
+        //var cars = carService.getAllCars();
+
         // Example: Configure search functionality
         configureSearch();
         configureReset();
     }
 
     private List<Contractor> createContractors() {
-        // Example: Create a list of contractors
         List<Contractor> contractors = new ArrayList<>();
         contractors.add(new Contractor("John", "Doe", "john@example.com", "07000 737383", ContractorType.ELectrician, null));
         contractors.add(new Contractor("John", "Doe", "john@example.com", "07000 737383", ContractorType.Owner, null));
@@ -83,7 +94,6 @@ public class CarListController {
     }
 
     private void configureSearch() {
-        // Example: Configure search functionality
         searchButton.setOnAction(event -> {
             String searchText = searchTextField.getText().toLowerCase();
             List<Car> filteredCars = allCars.stream()

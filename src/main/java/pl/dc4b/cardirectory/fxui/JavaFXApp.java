@@ -5,14 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.dc4b.cardirectory.services.CarService;
 
 import java.io.IOException;
 
 public class JavaFXApp extends Application {
 
+
     @Override
     public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/MainApp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxui/MainApp.fxml"));
 
         Parent root = null;
         try {
@@ -36,5 +38,7 @@ public class JavaFXApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
+
     }
 }

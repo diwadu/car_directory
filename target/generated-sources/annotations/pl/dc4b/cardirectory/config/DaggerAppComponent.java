@@ -1,7 +1,7 @@
+package pl.dc4b.cardirectory.config;
+
 import dagger.internal.DaggerGenerated;
 import javax.annotation.processing.Generated;
-
-import pl.dc4b.cardirectory.config.AppComponent;
 import pl.dc4b.cardirectory.dao.CalcDao;
 import pl.dc4b.cardirectory.dao.CarDao;
 import pl.dc4b.cardirectory.services.CarService;
