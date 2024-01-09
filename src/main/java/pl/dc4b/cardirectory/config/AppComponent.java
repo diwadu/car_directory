@@ -11,4 +11,5 @@ public interface AppComponent {
     CalcDao calcDao();
     CarDao carDao();
     CarService carService();
+    void inject(CarListController carListController);
 }

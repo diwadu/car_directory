@@ -2,7 +2,6 @@ package pl.dc4b.cardirectory.fxui;
 
 import dagger.MembersInjector;
 import dagger.internal.DaggerGenerated;
-import dagger.internal.InjectedFieldSignature;
 import dagger.internal.QualifierMetadata;
 import javax.annotation.processing.Generated;
 import javax.inject.Provider;
@@ -33,11 +32,10 @@ public final class CarListController_MembersInjector implements MembersInjector<
 
   @Override
   public void injectMembers(CarListController instance) {
-    injectCarService(instance, carServiceProvider.get());
+    injectInjectDependencies(instance, carServiceProvider.get());
   }
 
-  @InjectedFieldSignature("pl.dc4b.cardirectory.fxui.CarListController.carService")
-  public static void injectCarService(CarListController instance, CarService carService) {
-    instance.carService = carService;
+  public static void injectInjectDependencies(CarListController instance, CarService carService) {
+    instance.injectDependencies(carService);
   }
 }

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><?import javafx.geometry.Insets?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -9,21 +10,14 @@
       fx:controller="pl.dc4b.cardirectory.fxui.CarListController"
       spacing="10">
 
-    <HBox alignment="CENTER_LEFT" spacing="20" prefWidth="-Infinity" prefHeight="50.0">
+    <!-- Search GridPane -->
+    <GridPane hgap="20" vgap="20">
         <!-- Search Text Field with added left margin -->
-        <TextField fx:id="searchTextField" promptText="Search" prefWidth="300.0" VBox.vgrow="NEVER">
-            <HBox.margin>
-                <Insets left="15.0"/>
-            </HBox.margin>
+        <TextField fx:id="searchTextField" promptText="Search" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
         </TextField>
 
-        <!-- Add space below all 3 controls -->
-        <VBox.margin>
-            <Insets bottom="10.0" top="10.0"/>
-        </VBox.margin>
-
         <!-- Search Button with Icon (Replace "search-icon.png" with your actual icon) -->
-        <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="100.0" text="Search">
+        <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="100.0" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="0">
             <graphic>
                 <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -34,7 +28,7 @@
         </Button>
 
         <!-- Reset Button with Icon (Replace "reset-icon.png" with your actual icon) -->
-        <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="100.0" text="Reset">
+        <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="100.0" text="Reset" GridPane.columnIndex="3" GridPane.rowIndex="0">
             <graphic>
                 <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -43,18 +37,55 @@
                 </ImageView>
             </graphic>
         </Button>
-    </HBox>
+    </GridPane>
 
-    <!-- Car Properties Table -->
-    <TableView fx:id="carTableView" VBox.vgrow="ALWAYS">
-        <!-- Define Columns -->
-        <columns>
-            <TableColumn text="Brand" fx:id="brandColumn"/>
-            <TableColumn text="Model" fx:id="modelColumn"/>
-            <TableColumn text="Production Year" fx:id="productionYearColumn"/>
-            <TableColumn text="Color" fx:id="colorColumn"/>
-            <TableColumn text="VIN" fx:id="vinColumn"/>
-            <TableColumn text="Number of Contractors" fx:id="numberOfContractorsColumn"/>
-        </columns>
-    </TableView>
+    <!-- Main App GridPane -->
+    <GridPane hgap="20" vgap="20">
+        <!-- Contractors Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Kontrahenci" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Events Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Zdarzenia" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Schedules Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Harmonogramy" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Car Properties Table -->
+        <TableView fx:id="carTableView" VBox.vgrow="ALWAYS" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3">
+            <!-- Define Columns -->
+            <columns>
+                <TableColumn text="Brand" fx:id="brandColumn"/>
+                <TableColumn text="Model" fx:id="modelColumn"/>
+                <TableColumn text="Production Year" fx:id="productionYearColumn"/>
+                <TableColumn text="Color" fx:id="colorColumn"/>
+                <TableColumn text="VIN" fx:id="vinColumn"/>
+                <TableColumn text="Number of Contractors" fx:id="numberOfContractorsColumn"/>
+            </columns>
+        </TableView>
+    </GridPane>
+
 </VBox>

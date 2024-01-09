@@ -1,17 +1,22 @@
 package pl.dc4b.cardirectory.fxui;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import pl.dc4b.cardirectory.entities.*;
+import pl.dc4b.cardirectory.config.DaggerAppComponent;
+import pl.dc4b.cardirectory.entities.Car;
+import pl.dc4b.cardirectory.entities.CarBrand;
+import pl.dc4b.cardirectory.entities.CarColor;
 import pl.dc4b.cardirectory.services.CarService;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,17 +52,20 @@ public class CarListController {
     @FXML
     private TableColumn<Car, Integer> numberOfContractorsColumn;
 
-    //private final CarService carService;
+    private CarService carService;
 
-   /* @Inject
-    public CarListController(CarService carService){
+    @Inject
+    public void injectDependencies(CarService carService) {
         this.carService = carService;
-    }*/
+    }
 
     private final ObservableList<Car> allCars = FXCollections.observableArrayList();
 
 
     public void initialize() {
+
+        DaggerAppComponent.create().inject(this);
+
         // Initialize the table columns with property values
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
         modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
@@ -71,26 +79,14 @@ public class CarListController {
             return sizeBinding.asObject();
         });
 
-        // Example: Populate the table with sample data
-        allCars.add(new Car(CarBrand.Audi, "A4", 2022, CarColor.Yellow, "ABC123456789", createContractors()));
-        allCars.add(new Car(CarBrand.BMW, "X5", 2021, CarColor.Green, "XYZ987654321", createContractors()));
-        allCars.add(new Car(CarBrand.Ford, "Mustang", 2023, CarColor.Black, "DEF456123789", createContractors()));
+
+        List<Car> cars = carService.getAllCars();
+        allCars.setAll(FXCollections.observableArrayList(cars));
 
         carTableView.setItems(allCars);
 
-        //var cars = carService.getAllCars();
-
-        // Example: Configure search functionality
         configureSearch();
         configureReset();
-    }
-
-    private List<Contractor> createContractors() {
-        List<Contractor> contractors = new ArrayList<>();
-        contractors.add(new Contractor("John", "Doe", "john@example.com", "07000 737383", ContractorType.ELectrician, null));
-        contractors.add(new Contractor("John", "Doe", "john@example.com", "07000 737383", ContractorType.Owner, null));
-        // Add more contractors if needed
-        return contractors;
     }
 
     private void configureSearch() {

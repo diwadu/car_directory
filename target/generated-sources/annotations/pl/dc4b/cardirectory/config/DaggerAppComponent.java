@@ -4,6 +4,8 @@ import dagger.internal.DaggerGenerated;
 import javax.annotation.processing.Generated;
 import pl.dc4b.cardirectory.dao.CalcDao;
 import pl.dc4b.cardirectory.dao.CarDao;
+import pl.dc4b.cardirectory.fxui.CarListController;
+import pl.dc4b.cardirectory.fxui.CarListController_MembersInjector;
 import pl.dc4b.cardirectory.services.CarService;
 
 @DaggerGenerated
@@ -59,6 +61,16 @@ public final class DaggerAppComponent {
     @Override
     public CarService carService() {
       return AppModule_ProvideCarServiceFactory.provideCarService(AppModule_ProvideCarDaoFactory.provideCarDao());
+    }
+
+    @Override
+    public void inject(CarListController carListController) {
+      injectCarListController(carListController);
+    }
+
+    private CarListController injectCarListController(CarListController instance) {
+      CarListController_MembersInjector.injectInjectDependencies(instance, carService());
+      return instance;
     }
   }
 }
