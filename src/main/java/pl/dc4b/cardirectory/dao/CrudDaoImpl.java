@@ -174,7 +174,7 @@ public abstract class CrudDaoImpl<T extends BaseEntity> implements CrudDao<T> {
         return String.format(INSERT_QUERY, getTableName(), columnNames.toString(), values.toString());
     }
 
-    private String buildUpdateQuery() {
+    protected String buildUpdateQuery() {
         StringBuilder setClause = new StringBuilder();
 
         List<Field> fields = getAllFields();

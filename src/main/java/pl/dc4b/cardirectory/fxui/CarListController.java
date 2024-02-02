@@ -5,11 +5,10 @@ import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import pl.dc4b.cardirectory.config.DaggerAppComponent;
 import pl.dc4b.cardirectory.entities.Car;
 import pl.dc4b.cardirectory.entities.CarBrand;
@@ -21,15 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CarListController {
-
-    @FXML
-    private TextField searchTextField;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private Button resetButton;
+    public VBox carListComponent;
 
     @FXML
     private TableView<Car> carTableView;
@@ -61,7 +52,6 @@ public class CarListController {
 
     private final ObservableList<Car> allCars = FXCollections.observableArrayList();
 
-
     public void initialize() {
 
         DaggerAppComponent.create().inject(this);
@@ -84,34 +74,22 @@ public class CarListController {
         allCars.setAll(FXCollections.observableArrayList(cars));
 
         carTableView.setItems(allCars);
+    }
+    public void handleSearch(String searchText) {
+        List<Car> filteredCars = allCars.stream()
+                .filter(car -> car.getBrand().name().toLowerCase().contains(searchText)
+                        || car.getModel().toLowerCase().contains(searchText)
+                        || String.valueOf(car.getProductionYear()).contains(searchText)
+                        || car.getColor().name().toLowerCase().contains(searchText)
+                        || car.getVin().toLowerCase().contains(searchText)
+                        || String.valueOf(car.getContractors().size()).contains(searchText))
+                .collect(Collectors.toList());
 
-        configureSearch();
-        configureReset();
+        carTableView.setItems(FXCollections.observableArrayList(filteredCars));
     }
 
-    private void configureSearch() {
-        searchButton.setOnAction(event -> {
-            String searchText = searchTextField.getText().toLowerCase();
-            List<Car> filteredCars = allCars.stream()
-                    .filter(car -> car.getBrand().name().toLowerCase().contains(searchText)
-                            || car.getModel().toLowerCase().contains(searchText)
-                            || String.valueOf(car.getProductionYear()).contains(searchText)
-                            || car.getColor().name().toLowerCase().contains(searchText)
-                            || car.getVin().toLowerCase().contains(searchText)
-                            || String.valueOf(car.getContractors().size()).contains(searchText))
-                    .collect(Collectors.toList());
-
-            carTableView.setItems(FXCollections.observableArrayList(filteredCars));
-        });
-    }
-
-    private void configureReset() {
-        resetButton.setOnAction(event -> {
-            searchTextField.clear();
-            List<Car> filteredCars = allCars.stream()
-                    .collect(Collectors.toList());
-
-            carTableView.setItems(FXCollections.observableArrayList(filteredCars));
-        });
+    public void handleReset(){
+        List<Car> filteredCars = allCars.stream().collect(Collectors.toList());
+        carTableView.setItems(FXCollections.observableArrayList(filteredCars));
     }
 }

@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import java.util.List;
 
 public class CarServiceImpl implements CarService {
-
     private final CarDao carDao;
 
     @Inject

@@ -8,4 +8,6 @@ public interface CarDao extends CrudDao<Car> {
     List<Car> findByBrand(String brand);
 
     List<Car> getAll();
+
+    void update(Car entity);
 }

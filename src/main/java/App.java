@@ -10,19 +10,49 @@ import pl.dc4b.cardirectory.services.CarService;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 public class App {
-    public  static AppComponent appComponent;
+    public static AppComponent appComponent;
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         setupDI();
         //setupDb();
 
         CarService carService = appComponent.carService();
-        //doCrudStuff(carDao);
         var cars = carService.getAllCars();
 
-        JavaFXApp.main(args);
+        showMainMenu();
+        //JavaFXApp.main(args);
+    }
+
+    public static void showMainMenu () {
+        while (true) {
+            System.out.println("------------------------------");
+            System.out.println("1. Cars");
+            System.out.println("2. Contractors");
+            System.out.println("3. Exit");
+
+
+            System.out.print("-> Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    appComponent.carTextUIManager().showMainMenu();
+                    break;
+                case 2:
+                    //ContractorCRUDApp.runContractorCRUD();
+                    break;
+                case 3:
+                    System.out.println("Exiting the application. Goodbye!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
     }
 
     private static void setupDI() {

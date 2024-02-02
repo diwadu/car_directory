@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pl.dc4b.cardirectory.fxui.CarListController"
+      fx:id="carListComponent" VBox.vgrow="ALWAYS" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3">
+    <TableView fx:id="carTableView" >
+        <!-- Define Columns -->
+        <columns>
+            <TableColumn text="Brand" fx:id="brandColumn"/>
+            <TableColumn text="Model" fx:id="modelColumn"/>
+            <TableColumn text="Production Year" fx:id="productionYearColumn"/>
+            <TableColumn text="Color" fx:id="colorColumn"/>
+            <TableColumn text="VIN" fx:id="vinColumn"/>
+            <TableColumn text="Number of Contractors" fx:id="numberOfContractorsColumn"/>
+        </columns>
+    </TableView>
+</VBox>

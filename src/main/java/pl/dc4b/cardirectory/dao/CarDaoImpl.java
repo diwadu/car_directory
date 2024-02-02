@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDao {
 
+
     private static final String SELECT_ALL_QUERY =
             " SELECT " +
             "   cars.id, cars.brand, cars.model, cars.productionYear, cars.color, cars.vin, cars.createdAt, cars.updatedAt, " +
@@ -48,7 +49,8 @@ public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDa
         preparedStatement.setInt(3, car.getProductionYear());
         preparedStatement.setString(4, car.getColor().toString());
         preparedStatement.setString(5, car.getVin());
-        preparedStatement.setObject(6, LocalDateTime.now());
+        preparedStatement.setObject(6, car.getCreatedAt());
+        preparedStatement.setObject(7, LocalDateTime.now());
     }
 
     @Override
@@ -111,6 +113,22 @@ public class CarDaoImpl<T extends Car> extends CrudDaoImpl<Car> implements CarDa
         }
 
         return new ArrayList<>(carMap.values());
+    }
+
+
+    public void update(Car entity) {
+        try (Connection connection = DbHelper.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(buildUpdateQuery())) {
+
+            setParametersForUpdate(preparedStatement, entity);
+            preparedStatement.setInt(Car.class.getDeclaredFields().length + BaseEntity.class.getDeclaredFields().length - 1, entity.getId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

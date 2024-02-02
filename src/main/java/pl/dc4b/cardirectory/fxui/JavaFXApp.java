@@ -13,13 +13,14 @@ import java.io.IOException;
 public class JavaFXApp extends Application {
 
     private static AppComponent appComponent;
+    public static FXMLLoader loader;
 
     @Override
     public void start(Stage primaryStage) {
 
         appComponent = DaggerAppComponent.create();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxui/MainApp.fxml"));
+        loader = new FXMLLoader(getClass().getResource("/fxui/LayoutComponent.fxml"));
 
         Parent root = null;
         try {
@@ -33,7 +34,9 @@ public class JavaFXApp extends Application {
         primaryStage.setScene(scene);
 
         // Get the controller from the loader and call inject
-        CarListController controller = loader.getController();
+        //CarListController controller = loader.getController();
+        //appComponent.inject(controller);
+        LayoutController controller = loader.getController();
         appComponent.inject(controller);
 
         // Initialize the controller or perform additional setup if needed

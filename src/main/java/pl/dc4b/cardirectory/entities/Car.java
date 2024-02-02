@@ -77,6 +77,18 @@ public class Car extends BaseEntity {
     public void setContractors(List<Contractor> contractors) {
         this.contractors = contractors;
     }
+
+    @Override
+    public String toString() {
+        return "\t" + super.getId() +
+                "\t" + brand +
+                "\t" + model +
+                "\t" + productionYear +
+                "\t" + color +
+                "\t" + vin  +
+                "\t" + super.getCreatedAt() +
+                "\t" + super.getUpdatedAt();
+    }
 }
 
 

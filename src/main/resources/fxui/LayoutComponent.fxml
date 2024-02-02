@@ -7,7 +7,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="pl.dc4b.cardirectory.fxui.CarListController"
+      fx:controller="pl.dc4b.cardirectory.fxui.LayoutController"
       spacing="10">
 
     <!-- Search GridPane -->
@@ -74,18 +74,8 @@
             </graphic>
         </Button>
 
-        <!-- Car Properties Table -->
-        <TableView fx:id="carTableView" VBox.vgrow="ALWAYS" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3">
-            <!-- Define Columns -->
-            <columns>
-                <TableColumn text="Brand" fx:id="brandColumn"/>
-                <TableColumn text="Model" fx:id="modelColumn"/>
-                <TableColumn text="Production Year" fx:id="productionYearColumn"/>
-                <TableColumn text="Color" fx:id="colorColumn"/>
-                <TableColumn text="VIN" fx:id="vinColumn"/>
-                <TableColumn text="Number of Contractors" fx:id="numberOfContractorsColumn"/>
-            </columns>
-        </TableView>
+        <!-- Include the child controller -->
+        <fx:include source="CarListComponent.fxml"/>
     </GridPane>
 
 </VBox>

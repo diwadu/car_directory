@@ -4,10 +4,10 @@ DROP TABLE IF EXISTS contractors;
 
 CREATE TABLE cars (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    brand VARCHAR(128) NOT NULL,
+    brand VARCHAR(128) NOT NULL, --CarBrand enum (Audi, BMW, Ford)
     model VARCHAR(128) NULL,
     productionYear INTEGER NOT NULL,
-    color VARCHAR(64) NULL,
+    color VARCHAR(64) NULL, --CarColor enum (Yellow, Black, Green)
     vin VARCHAR(64) NULL,
     createdAt DATETIME NOT NULL,
     updatedAt DATETIME NOT NULL
