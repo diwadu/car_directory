@@ -47,7 +47,5 @@ public class JavaFXApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
-
     }
 }
