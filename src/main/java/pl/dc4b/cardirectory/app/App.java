@@ -1,3 +1,5 @@
+package pl.dc4b.cardirectory.app;
+
 import pl.dc4b.cardirectory.config.AppComponent;
 import pl.dc4b.cardirectory.config.DaggerAppComponent;
 import pl.dc4b.cardirectory.dao.CarDao;

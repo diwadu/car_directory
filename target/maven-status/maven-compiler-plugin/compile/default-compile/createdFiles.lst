@@ -5,7 +5,6 @@ pl\dc4b\cardirectory\textui\CarTextUIManagerImpl.class
 pl\dc4b\cardirectory\entities\ContractorType.class
 pl\dc4b\cardirectory\config\AppComponent.class
 pl\dc4b\cardirectory\fxui\CarListController.class
-App.class
 pl\dc4b\cardirectory\config\AppModule_ProvideDependenciesFactory.class
 pl\dc4b\cardirectory\fxui\LayoutController.class
 pl\dc4b\cardirectory\textui\CarTextUIManagerImpl_Factory.class
@@ -17,6 +16,7 @@ pl\dc4b\cardirectory\services\CarServiceImpl.class
 pl\dc4b\cardirectory\entities\Car.class
 pl\dc4b\cardirectory\fxui\JavaFXApp.class
 pl\dc4b\cardirectory\config\AppModule_ProvideCarDaoFactory.class
+pl\dc4b\cardirectory\app\App.class
 pl\dc4b\cardirectory\fxui\CarListController_MembersInjector.class
 pl\dc4b\cardirectory\config\DaggerAppComponent$AppComponentImpl.class
 pl\dc4b\cardirectory\config\AppModule_ProvideCarDaoFactory$InstanceHolder.class

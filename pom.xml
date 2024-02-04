@@ -84,7 +84,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.java.App</mainClass>
+                            <mainClass>pl.dc4b.cardirectory.app.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
