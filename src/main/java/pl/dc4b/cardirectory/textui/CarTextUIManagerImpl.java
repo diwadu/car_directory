@@ -6,6 +6,7 @@ import pl.dc4b.cardirectory.entities.CarBrand;
 import pl.dc4b.cardirectory.entities.CarColor;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Scanner;
 
 public class CarTextUIManagerImpl extends BaseTextUIManager implements CarTextUIManager {
@@ -26,7 +27,8 @@ public class CarTextUIManagerImpl extends BaseTextUIManager implements CarTextUI
             System.out.println("2. View Cars");
             System.out.println("3. Update Car");
             System.out.println("4. Delete Car");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("5. Search for Car");
+            System.out.println("6. Back to Main Menu");
 
             showEnterChoice();
 
@@ -47,12 +49,16 @@ public class CarTextUIManagerImpl extends BaseTextUIManager implements CarTextUI
                     //deleteCar();
                     break;
                 case 5:
+                    searchCar();
+                    break;
+                case 6:
                     return; // Back to the main menu
                 default:
                     showInvalidChoice();
             }
         }
     }
+
 
     private void addCar() {
         Car car = new Car();
@@ -76,7 +82,7 @@ public class CarTextUIManagerImpl extends BaseTextUIManager implements CarTextUI
         car.setVin(scanner.nextLine());
 
         this.carDao.create(car);
-        showSuccessMessage();
+        showSuccessMessage("Car updated!");
     }
 
     private void viewCars() {
@@ -131,7 +137,21 @@ public class CarTextUIManagerImpl extends BaseTextUIManager implements CarTextUI
         // Update the car in the database
         carDao.update(existingCar);
 
-        System.out.println("Car updated successfully!");
+        showSuccessMessage("Car updated successfully!");
     }
 
+    private void searchCar() {
+        showMenuTitle("Enter the car Bran/Model to search: ");
+        String carOrModel = scanner.nextLine().toLowerCase();
+
+        List<Car> cars = carDao.getAll();
+
+        cars = cars.stream().filter(x->x.getModel().toLowerCase().contains(carOrModel)).toList();
+
+        showInfo("Found results: " + cars.size());
+
+        showTableHeader(new String[] {"id", "brand", "model", "year", "color", "vin", "createdAt", "updatedAt"});
+        cars.forEach(x->System.out.println(x.toString()));
+
+    }
 }

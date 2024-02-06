@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pl.dc4b.cardirectory.fxui.LayoutController"
+      spacing="10">
+
+    <!-- Search GridPane -->
+    <GridPane hgap="20" vgap="20">
+        <!-- Search Text Field with added left margin -->
+        <TextField fx:id="searchTextField" promptText="Search" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        </TextField>
+
+        <!-- Search Button with Icon (Replace "search-icon.png" with your actual icon) -->
+        <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="100.0" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <graphic>
+                <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Reset Button with Icon (Replace "reset-icon.png" with your actual icon) -->
+        <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="100.0" text="Reset" GridPane.columnIndex="3" GridPane.rowIndex="0">
+            <graphic>
+                <ImageView fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/reset-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </GridPane>
+
+    <!-- Main App GridPane -->
+    <GridPane hgap="20" vgap="20">
+        <!-- Contractors Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Kontrahenci" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Events Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Zdarzenia" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Schedules Button with Icon -->
+        <Button mnemonicParsing="false" prefWidth="100.0" prefHeight="100.0" text="Harmonogramy" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <graphic>
+                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/fxui/images/search-icon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Include the child controller -->
+        <fx:include source="CarListComponent.fxml"/>
+    </GridPane>
+
+</VBox>

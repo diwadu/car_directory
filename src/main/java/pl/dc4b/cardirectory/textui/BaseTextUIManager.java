@@ -10,9 +10,12 @@ public abstract class BaseTextUIManager {
     protected final String resetColor = "\u001B[0m";
 
     protected void showMenuTitle(String text){
-        System.out.println(whiteColor + "===================================" + resetColor);
-        System.out.println(whiteColor + "|| *** " + blueColor + text + whiteColor + " ***");
-        System.out.println(whiteColor + "===================================" + resetColor);
+        System.out.println(whiteColor + "--------------------------------------------" + resetColor);
+        System.out.println(whiteColor + "| *** " + blueColor + text + resetColor);
+    }
+
+    protected void showInfo(String text){
+        System.out.println(whiteColor + "\t-> " + blueColor + text + resetColor);
     }
 
     protected void showEnterChoice(){
@@ -23,8 +26,8 @@ public abstract class BaseTextUIManager {
         System.out.println(redColor + " [ Invalid choice. Please enter a valid option. ]" + resetColor);
     }
 
-    protected void showSuccessMessage(){
-        System.out.println(greenColor + " [ Operation succeeded! ]" + resetColor);
+    protected void showSuccessMessage(String message){
+        System.out.println(greenColor + "\t->" + message + resetColor);
     }
     protected void showErrorMessage(String message){
         System.out.println(redColor + " [ " + message + " ]" + resetColor);
